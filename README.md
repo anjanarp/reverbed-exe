@@ -1,8 +1,8 @@
-# reverbed.exe ✦
+# reverbed.exe
 
 *itch your brain again.*
 
-A Y2K-style music player that turns any song into its slowed + reverb (or nightcore) version, right in your browser. Built as a love letter to undergrad ♡
+A Y2K-style music player that turns any song into its slowed + reverb (or nightcore) version, right in your browser. Built as a love letter to undergrad.
 
 ## What it does
 
@@ -27,7 +27,7 @@ All the audio processing and exporting happens in the browser. The backend only 
 
 ## Access
 
-The live site is friends-only and locked behind an access code. Want to try it? Email me ♡
+The live site is friends-only and locked behind an access code. Want to try it? Email me.
 
 ## Running it locally
 
