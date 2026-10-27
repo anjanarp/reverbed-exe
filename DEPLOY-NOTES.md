@@ -19,3 +19,9 @@ Cost caps to set when deploying the backend (Cloud Run):
 - a billing budget alert (e.g. $5) in the Cloud console
 
 Frontend: put the backend URL in `frontend/.env.production.local` as `VITE_API_URL`, then `npm run build` and host `frontend/dist`.
+
+## Deploys
+
+Pushing to `main` deploys everything automatically: the Cloud Build trigger `deploy-main` runs `cloudbuild.yaml`, which rebuilds and redeploys the backend (Cloud Run `reverbed-api`) and the site (Firebase Hosting). Build history: Cloud Build → History in the `reverbed-exe` project.
+
+The Cloud Run settings (access code, allowed origins, instance caps) live on the service and carry over between deploys.
