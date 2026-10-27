@@ -36,7 +36,8 @@ export async function renderExport({ audioUrl, controls, loop, ambience }) {
 
         const player = new Tone.Player(sourceBuffer).connect(eq)
         player.playbackRate = settings.playbackRate
-        player.start(0, offset, playSeconds)
+        // Tone scales this duration by playbackRate itself, so pass source seconds
+        player.start(0, offset, sourceSeconds)
 
         if (ambienceBuffer) {
             // mixed in after the effects, matching how it sounds in the app

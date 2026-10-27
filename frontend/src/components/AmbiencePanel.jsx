@@ -32,9 +32,10 @@ export default function AmbiencePanel({
         const fadeMs = 600
 
         function step(now) {
-            const progress = Math.min(1, (now - startTime) / fadeMs)
+            // the frame timestamp can be slightly earlier than startTime, so clamp both ends
+            const progress = Math.max(0, Math.min(1, (now - startTime) / fadeMs))
 
-            audio.volume = startVolume + (targetVolume - startVolume) * progress
+            audio.volume = Math.max(0, Math.min(1, startVolume + (targetVolume - startVolume) * progress))
 
             if (progress < 1) {
                 fadeFrameRef.current = requestAnimationFrame(step)
