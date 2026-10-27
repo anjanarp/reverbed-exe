@@ -1,0 +1,38 @@
+# Runs on every push to main (Cloud Build trigger "deploy-main").
+# Rebuilds the backend container, redeploys Cloud Run, then rebuilds the
+# frontend and republishes Firebase Hosting. Existing Cloud Run settings
+# (access code, origins, instance caps) are kept as-is.
+
+substitutions:
+  _REGION: us-east1
+  _IMAGE: us-east1-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/reverbed-api
+
+steps:
+  - id: build-backend
+    name: gcr.io/cloud-builders/docker
+    args: ["build", "-t", "${_IMAGE}:${SHORT_SHA}", "backend"]
+
+  - id: push-backend
+    name: gcr.io/cloud-builders/docker
+    args: ["push", "${_IMAGE}:${SHORT_SHA}"]
+
+  - id: deploy-backend
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    args: ["run", "deploy", "reverbed-api", "--image", "${_IMAGE}:${SHORT_SHA}", "--region", "${_REGION}", "--quiet"]
+
+  - id: build-frontend
+    name: node:22
+    dir: frontend
+    entrypoint: bash
+    args: ["-c", "npm ci && npm run build"]
+
+  - id: deploy-frontend
+    name: node:22
+    entrypoint: bash
+    args: ["-c", "npx --yes firebase-tools@14 deploy --only hosting --project ${PROJECT_ID} --non-interactive"]
+
+timeout: 1200s
+
+options:
+  logging: CLOUD_LOGGING_ONLY

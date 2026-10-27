@@ -4,10 +4,11 @@ import planetIcon from "../assets/planet-icon.png"
 import { useState } from "react"
 
 import { apiFetch } from "../api"
+import { helperAvailable, importViaHelper } from "../helper"
 
 const MAX_UPLOAD_MB = 50
 
-function SourcePanel({ onTrackLoaded }) {
+function SourcePanel({ onTrackLoaded, onNeedHelper }) {
 
     const [youtubeUrl, setYoutubeUrl] = useState("")
     const [status, setStatus] = useState("")
@@ -41,6 +42,21 @@ function SourcePanel({ onTrackLoaded }) {
                             setStatus("importing...")
 
                             try {
+                                // youtube blocks the cloud server, so prefer the visitor's own computer
+                                if (await helperAvailable()) {
+                                    setStatus("importing via your computer...")
+                                    onTrackLoaded(await importViaHelper(youtubeUrl), "youtube")
+                                    setStatus("downloaded ♡")
+                                    return
+                                }
+
+                                // the local dev server can still reach youtube directly
+                                if (import.meta.env.PROD) {
+                                    setStatus("youtube needs the helper ♡")
+                                    onNeedHelper()
+                                    return
+                                }
+
                                 const data = await apiFetch("/download", {
                                     method: "POST",
                                     headers: {

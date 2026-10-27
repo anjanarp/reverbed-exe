@@ -11,6 +11,7 @@ import NowPlayingBar from "./components/NowPlayingBar"
 import PresetsPanel from "./components/PresetsPanel"
 import Taskbar from "./components/Taskbar"
 import AccessGate from "./components/AccessGate"
+import HelperDialog from "./components/HelperDialog"
 import { apiUrl, cleanupTracks, getAccessCode, verifyAccessCode } from "./api"
 import * as Tone from "tone"
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
@@ -99,6 +100,7 @@ function App() {
   const [ambienceVolume, setAmbienceVolume] = useState(30)
 
   const [muted, setMuted] = useState(false)
+  const [helperOpen, setHelperOpen] = useState(false)
   const [grainOn, setGrainOn] = useState(true)
 
   useEffect(() => {
@@ -267,7 +269,8 @@ function App() {
     const track = {
       id: data.track_id,
       name: data.title || "untitled",
-      audioUrl: apiUrl(data.audio_url),
+      // server tracks come back as a path; helper tracks are already a blob: url
+      audioUrl: data.audio_url.startsWith("/") ? apiUrl(data.audio_url) : data.audio_url,
       source,
       addedAt: Date.now(),
     }
@@ -335,6 +338,7 @@ function App() {
           <div className="left-stack">
             <SourcePanel
               onTrackLoaded={handleTrackLoaded}
+              onNeedHelper={() => setHelperOpen(true)}
             />
 
             <HistoryPanel
@@ -424,6 +428,8 @@ function App() {
         grainOn={grainOn}
         onToggleGrain={() => setGrainOn(!grainOn)}
       />
+
+      {helperOpen && <HelperDialog onClose={() => setHelperOpen(false)} />}
     </div >
   )
 }

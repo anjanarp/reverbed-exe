@@ -252,8 +252,12 @@ def download_audio(request: Request, body: DownloadRequest, x_access_code: str =
 
             register_track(track_id)
             ydl.download([body.url])
-    except yt_dlp.utils.DownloadError:
+    except yt_dlp.utils.DownloadError as error:
         delete_track(track_id)
+
+        if "confirm you" in str(error) and "bot" in str(error):
+            raise HTTPException(status_code=503, detail="youtube blocked the server. run the helper or upload the file")
+
         raise HTTPException(status_code=502, detail="youtube download failed")
 
     downloaded_files = list(DOWNLOADS_DIR.glob(f"{track_id}-source.*"))

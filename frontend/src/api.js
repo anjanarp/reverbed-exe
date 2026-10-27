@@ -37,6 +37,7 @@ export function describeError(status, detail) {
     if (status === 413) return `file too big (${detail})`
     if (status === 422) return detail || "couldn't use that file"
     if (status === 400) return detail || "that link didn't work"
+    if (status === 502 || status === 503) return detail || "youtube didn't cooperate"
 
     return "something went wrong"
 }
