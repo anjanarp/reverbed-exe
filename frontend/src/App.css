@@ -1,0 +1,3159 @@
+/* === Global === */
+
+body {
+    margin: 0;
+    background: #120625;
+    color: #f3e8ff;
+    font-family: Arial, sans-serif;
+
+    overflow: hidden;
+}
+
+::selection {
+    background: #7c1fd6;
+    color: #fff1ff;
+}
+
+
+
+/* === App === */
+
+.app {
+    height: 100vh;
+    box-sizing: border-box;
+    /* room for the fixed taskbar */
+    padding-bottom: 46px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* the space between the now playing bar and the taskbar; panels sit centered in it */
+.stage {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+}
+
+.title-bar {
+    padding: 18px 24px 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.logo {
+    width: 330px;
+    height: auto;
+    display: block;
+}
+
+
+
+.player-shell {
+    /* the bottom frames carry ~41px of transparent margin; pull it back so the
+       visible gap above and below the panels comes out even */
+    padding: 0 24px;
+    margin-top: -12px;
+    margin-bottom: -41px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-left: 27px;
+
+}
+
+.window-controls {
+    position: fixed;
+
+    top: -15px;
+    right: -2px;
+
+    width: 150px;
+    height: auto;
+
+    display: block;
+
+    image-rendering: pixelated;
+}
+
+.workspace-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
+}
+
+.center-stack {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+
+
+/* === SourcePanel === */
+
+.source-panel-image-wrapper {
+    padding-top: 8px;
+}
+
+.source-panel-image {
+    width: 320px;
+    height: auto;
+    display: block;
+}
+
+
+
+.source-window-container {
+    position: relative;
+    width: 320px;
+}
+
+.youtube-section {
+    position: absolute;
+    top: 74px;
+    left: 32px;
+    width: 250px;
+}
+
+
+
+
+.youtube-label {
+    margin: 0 0 12px;
+    color: #c77dff;
+    font-family: "Courier New", monospace;
+    font-size: 0.95rem;
+    font-weight: 900;
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.youtube-input {
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    background: #241238;
+    border: 2px solid #6f3ca8;
+    border-radius: 3px;
+    color: #e9d5ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.82rem;
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 255, 255, 0.18),
+        inset -1px -1px 0 rgba(0, 0, 0, 0.65);
+}
+
+.youtube-input:focus {
+    border: 2px solid #360070;
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 255, 255, 0.18),
+        inset -1px -1px 0 rgba(0, 0, 0, 0.65),
+        0 0 8px rgba(217, 70, 239, 0.75);
+}
+
+.youtube-input::placeholder {
+    color: #a78bfa;
+    opacity: 0.8;
+}
+
+.import-button {
+    position: relative;
+
+    margin-top: 14px;
+    margin-left: 1px;
+    width: 160px;
+    padding: 9px 12px;
+
+    border: none;
+    border-radius: 2px;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.22), transparent 45%),
+        linear-gradient(180deg, #d946ef 0%, #7c1fd6 100%);
+
+    color: #fff1ff;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.95rem;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    text-shadow:
+        1px 1px 0 #4c0677,
+        0 0 5px rgba(255, 255, 255, 0.7);
+
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.45),
+        inset -2px -2px 0 rgba(44, 0, 88, 0.8),
+        0 0 8px rgba(217, 70, 239, 0.45);
+
+    image-rendering: pixelated;
+
+    outline: none;
+}
+
+.import-button::before,
+.import-button::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border: 2px solid #ffe4ff;
+}
+
+.import-button::before {
+    top: 2px;
+    left: 2px;
+
+    border-right: none;
+    border-bottom: none;
+}
+
+.import-button::after {
+    bottom: 2px;
+    right: 2px;
+
+    border-left: none;
+    border-top: none;
+}
+
+.import-button:active,
+.import-button:focus {
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.35),
+        inset -2px -2px 0 rgba(44, 0, 88, 0.9),
+        0 0 14px rgba(217, 70, 239, 0.9);
+}
+
+.planet-icon {
+    position: absolute;
+    width: 60px;
+    top: 75px;
+    left: 190px;
+    image-rendering: pixelated;
+}
+
+
+.upload-section {
+    position: absolute;
+    top: 140px;
+    left: 0;
+    width: 250px;
+}
+
+.divider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.divider-line {
+    flex: 1;
+    height: 1px;
+    background: #43215f;
+    box-shadow: 0 0 4px rgba(217, 70, 239, 0.35);
+}
+
+.divider-text {
+    margin: 0;
+    color: #f3d9ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.95rem;
+    font-weight: 900;
+    text-shadow: 1px 1px 0 #4c0677;
+}
+
+.upload-button {
+    position: relative;
+
+    width: 100%;
+    padding: 11px 12px;
+
+    border: none;
+    border-radius: 2px;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.22), transparent 45%),
+        linear-gradient(180deg, #d946ef 0%, #7c1fd6 100%);
+
+    color: #fff1ff;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.92rem;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    text-shadow:
+        1px 1px 0 #4c0677,
+        0 0 5px rgba(255, 255, 255, 0.7);
+
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.45),
+        inset -2px -2px 0 rgba(44, 0, 88, 0.8),
+        0 0 8px rgba(217, 70, 239, 0.45);
+
+    image-rendering: pixelated;
+    margin-left: 13px;
+
+    outline: none;
+}
+
+.upload-button::before,
+.upload-button::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border: 2px solid #ffe4ff;
+}
+
+.upload-button::before {
+    top: 2px;
+    left: 2px;
+
+    border-right: none;
+    border-bottom: none;
+}
+
+.upload-button::after {
+    bottom: 2px;
+    right: 2px;
+
+    border-left: none;
+    border-top: none;
+}
+
+.upload-button:active,
+.upload-button:focus {
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.35),
+        inset -2px -2px 0 rgba(44, 0, 88, 0.9),
+        0 0 14px rgba(217, 70, 239, 0.9);
+}
+
+.upload-note {
+    margin-top: 24px;
+    text-align: center;
+
+    color: #b991ff;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.import-status {
+    margin: 8px 0 0;
+    color: #d8b4fe;
+    font-family: "Courier New", monospace;
+    font-size: 0.75rem;
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.youtube-input::selection {
+    background: #7c1fd6;
+    color: #fff1ff;
+}
+
+
+
+/* === HistoryPanel === */
+
+.left-stack {
+    display: flex;
+    flex-direction: column;
+    /* frame PNGs carry ~16px of transparent margin, so this reads as a ~38px gap */
+    gap: 4px;
+}
+
+.history-panel {
+    position: relative;
+    width: 320px;
+    height: 423px;
+    box-sizing: border-box;
+
+    /* 9-slice the frame so the tab and corners stay crisp at any height */
+    border-style: solid;
+    border-width: 54.6px 13.7px 13.7px 13.7px;
+    border-image: url("./assets/history-window.png") 200 50 50 50 fill / 54.6px 13.7px 13.7px 13.7px stretch;
+}
+
+.history-content {
+    position: absolute;
+    inset: 12px 12px 16px 12px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.history-hint {
+    margin: 0 0 10px;
+    padding-left: 10px;
+
+    color: #8b6cc7;
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.history-empty {
+    margin: 40px 0 0;
+    text-align: center;
+
+    color: #b991ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.history-list {
+    flex: 1;
+    margin: 0;
+    padding: 0 4px 0 0;
+    list-style: none;
+
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #7c1fd6 transparent;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #d946ef, #7c1fd6);
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(217, 70, 239, 0.6);
+}
+
+.history-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 4px;
+    padding: 7px 8px 7px 10px;
+
+    border: 1px solid transparent;
+    border-radius: 2px;
+
+    color: #e9d5ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition:
+        background 0.1s ease,
+        border-color 0.1s ease;
+}
+
+.history-item:hover {
+    background: rgba(124, 31, 214, 0.18);
+    border-color: #43215f;
+}
+
+.history-item-active {
+    background: rgba(124, 31, 214, 0.28);
+    border-color: #6f3ca8;
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 8px rgba(217, 70, 239, 0.35);
+}
+
+.history-item-active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 3px;
+
+    background: linear-gradient(180deg, #d946ef, #7c1fd6);
+    box-shadow: 0 0 6px #d946ef;
+}
+
+.history-index {
+    color: #8b6cc7;
+    font-size: 0.72rem;
+}
+
+.history-source {
+    width: 10px;
+    color: #d946ef;
+    font-size: 0.7rem;
+    text-align: center;
+    text-shadow: 0 0 5px rgba(217, 70, 239, 0.7);
+}
+
+.history-name {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.history-item-active .history-name {
+    color: #fff1ff;
+    text-shadow:
+        1px 1px 0 #4c0677,
+        0 0 5px rgba(255, 255, 255, 0.45);
+}
+
+.history-rename-input {
+    flex: 1;
+    min-width: 0;
+
+    padding: 2px 6px;
+    outline: none;
+
+    background: #241238;
+    border: 1px solid #d946ef;
+    border-radius: 2px;
+
+    color: #fff1ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 255, 255, 0.18),
+        0 0 8px rgba(217, 70, 239, 0.6);
+}
+
+.history-remove {
+    padding: 0 2px;
+    border: none;
+    background: transparent;
+
+    color: #8b6cc7;
+    font-size: 0.7rem;
+
+    opacity: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+.history-item:hover .history-remove {
+    opacity: 1;
+}
+
+.history-remove:hover {
+    color: #f0abfc;
+    text-shadow: 0 0 6px #d946ef;
+}
+
+
+
+/* === WaveformPanel === */
+
+.waveform-panel-wrapper {
+    margin-top: 8px;
+}
+
+.waveform-panel-container {
+    position: relative;
+    width: 660px;
+}
+
+
+.waveform-frame-image {
+    width: 100%;
+    display: block;
+}
+
+
+.waveform-display {
+    position: absolute;
+
+    top: 97px;
+    left: 36px;
+
+    width: 590px;
+    height: 80px;
+}
+
+
+.waveform-play-button {
+
+    pointer-events: auto;
+    width: 28px;
+    height: 28px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    background: transparent;
+
+    color: #d8b4fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 1.1rem;
+    font-weight: 900;
+
+    text-shadow:
+        0 0 4px rgba(217, 70, 239, 0.55);
+
+    cursor: pointer;
+
+    opacity: 0.78;
+
+    transition:
+        opacity 0.15s ease,
+        text-shadow 0.15s ease,
+        color 0.15s ease,
+        transform 0.1s ease;
+}
+
+.waveform-play-button:hover {
+    opacity: 1;
+
+    color: #f0abfc;
+
+    text-shadow:
+        0 0 6px rgba(240, 171, 252, 0.95),
+        0 0 14px rgba(217, 70, 239, 0.65);
+}
+
+.waveform-play-button:active {
+    transform: translateY(1px);
+}
+
+
+.waveform-display ::part(region) {
+    background: rgba(168, 85, 247, 0.18);
+
+    border-top: 1px solid rgba(240, 171, 252, 0.65);
+    border-bottom: 1px solid rgba(240, 171, 252, 0.65);
+
+    box-shadow:
+        0 0 10px rgba(217, 70, 239, 0.28),
+        inset 0 0 14px rgba(217, 70, 239, 0.16);
+
+    overflow: visible;
+}
+
+.waveform-display ::part(region-handle) {
+    width: 2px;
+
+    background: #f8d4ff;
+
+    border: none;
+
+    box-shadow:
+        0 0 4px rgba(248, 212, 255, 0.9),
+        0 0 10px rgba(217, 70, 239, 0.55);
+
+    opacity: 1;
+}
+
+
+
+.waveform-display .loop-region-corner {
+    position: absolute;
+
+    width: 8px;
+    height: 8px;
+
+    background: #120625;
+    border: 2px solid #d8b4fe;
+
+    box-shadow:
+        0 0 5px rgba(216, 180, 254, 0.9),
+        inset 0 0 3px rgba(240, 171, 252, 0.8);
+
+    pointer-events: none;
+    z-index: 20;
+}
+
+.waveform-display .loop-region-corner.top-left {
+    top: -8px;
+    left: -8px;
+}
+
+.waveform-display .loop-region-corner.top-right {
+    top: -6px;
+    right: -6px;
+}
+
+.waveform-display .loop-region-corner.bottom-left {
+    bottom: -6px;
+    left: -6px;
+}
+
+.waveform-display .loop-region-corner.bottom-right {
+    bottom: -6px;
+    right: -6px;
+}
+
+.waveform-clear-loop-button {
+    pointer-events: auto;
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    color: #d8b4fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.82rem;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    text-shadow:
+        0 0 4px rgba(217, 70, 239, 0.55);
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.15s ease,
+        text-shadow 0.15s ease,
+        color 0.15s ease;
+
+    opacity: 0.78;
+}
+
+.waveform-clear-loop-button:hover {
+    opacity: 1;
+
+    color: #f0abfc;
+
+    text-shadow:
+        0 0 6px rgba(240, 171, 252, 0.95),
+        0 0 14px rgba(217, 70, 239, 0.65);
+}
+
+.waveform-clear-loop-button:active {
+    transform: translateY(1px);
+}
+
+
+.waveform-controls {
+    position: absolute;
+
+    left: 34px;
+    right: 34px;
+    bottom: 33px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    pointer-events: none;
+}
+
+.waveform-timestamp {
+    position: absolute;
+
+    top: 23px;
+    right: 30px;
+
+    width: 230px;
+    text-align: right;
+
+    color: #d8b4fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.82rem;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 4px rgba(217, 70, 239, 0.55);
+
+    opacity: 0.68;
+
+    pointer-events: none;
+    user-select: none;
+}
+
+
+
+/* === TransformPanel === */
+
+.transform-panel-wrapper {
+    margin-top: -18px;
+}
+
+.transform-panel-container {
+    position: relative;
+
+    width: 660px;
+}
+
+.transform-frame-image {
+    width: 100%;
+
+    display: block;
+}
+
+
+
+.transform-slider-section {
+    position: absolute;
+
+    top: 96px;
+    left: 28px;
+    right: 28px;
+}
+
+.transform-slider-labels {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    color: #d8b4fe;
+
+    font-family: "Courier New", monospace;
+    text-shadow:
+        0 0 4px rgba(217, 70, 239, 0.55);
+}
+
+.transform-slider-labels div:nth-child(2) {
+    position: absolute;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    text-align: center;
+}
+
+.transform-slider-labels div:nth-child(3) {
+    text-align: right;
+}
+
+.transform-slider-percent {
+    margin: 0 0 6px;
+
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.transform-slider-mode {
+    margin: 0;
+
+    font-size: 0.72rem;
+    font-weight: 900;
+
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.transform-slider-track-wrapper {
+    position: relative;
+
+    margin-top: 20px;
+
+    height: 46px;
+}
+
+.transform-slider-bar {
+    position: absolute;
+
+    top: 16px;
+    left: 0;
+
+    width: 100%;
+    height: 18px;
+
+    display: block;
+}
+
+.transform-slider-input {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 46px;
+
+    opacity: 0;
+
+    cursor: pointer;
+    z-index: 5;
+}
+
+.transform-slider-button {
+    position: absolute;
+
+    top: -6px;
+    left: 50%;
+
+    width: 44px;
+    height: 44px;
+
+    transform: translateX(-50%);
+
+    image-rendering: pixelated;
+
+    pointer-events: none;
+    z-index: 6;
+}
+
+
+.advanced-transform-section {
+    position: absolute;
+
+    top: 205px;
+    left: 28px;
+    right: 28px;
+
+    z-index: 10;
+}
+
+.advanced-section-title {
+    color: #d8b4fe;
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-align: center;
+
+    margin-bottom: 18px;
+
+    text-shadow:
+        0 0 4px rgba(217, 70, 239, 0.7);
+}
+
+.advanced-slider-bar {
+    position: absolute;
+
+    top: 10px;
+    left: 0;
+
+    width: 150px;
+    height: 13px;
+
+    display: block;
+    pointer-events: none;
+}
+
+.advanced-slider-button {
+    position: absolute;
+
+    top: 4px;
+
+    width: 24px;
+    height: 24px;
+
+    transform: translateX(-50%);
+
+    image-rendering: pixelated;
+
+    pointer-events: none;
+    z-index: 6;
+}
+
+.advanced-slider-track-wrapper {
+    position: relative;
+    width: 150px;
+    height: 44px;
+}
+
+.advanced-slider-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 44px;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+    touch-action: none;
+}
+
+
+
+.advanced-slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 6px;
+
+    color: #f5d0fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    text-shadow:
+        0 0 4px rgba(217, 70, 239, 0.7);
+}
+
+.advanced-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 150px);
+
+    justify-content: center;
+
+    column-gap: 35px;
+    row-gap: 58px;
+
+    margin-top: 24px;
+}
+
+.advanced-eq-select {
+    width: 140px;
+
+    padding:
+        6px 10px;
+
+    background:
+        rgba(25, 0, 40, 0.95);
+
+    border:
+        1px solid #d946ef;
+
+    color:
+        #f5d0fe;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:
+        0.75rem;
+
+    outline:
+        none;
+
+    box-shadow:
+        0 0 10px rgba(217, 70, 239, 0.35);
+}
+
+.advanced-transform-section {
+    position: absolute;
+
+    top: 235px;
+    left: 42px;
+    right: 42px;
+}
+
+
+
+.eq-profile-selector {
+    width: 145px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 8px;
+    box-sizing: border-box;
+
+    border: 1px solid rgba(217, 70, 239, 0.85);
+
+    background:
+        linear-gradient(to bottom,
+            rgba(45, 0, 70, 0.95),
+            rgba(18, 0, 32, 0.98));
+
+    box-shadow:
+        0 0 10px rgba(217, 70, 239, 0.25),
+        inset 0 0 10px rgba(217, 70, 239, 0.18);
+
+    color: #f5d0fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    font-weight: 900;
+
+    user-select: none;
+}
+
+.eq-profile-selector button {
+    border: none;
+    background: transparent;
+
+    color: #d8b4fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    text-shadow:
+        0 0 4px rgba(217, 70, 239, 0.8);
+
+    transition:
+        color 0.15s ease,
+        text-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+.eq-profile-selector button:hover {
+    color: white;
+
+    text-shadow:
+        0 0 6px rgba(240, 171, 252, 1),
+        0 0 12px rgba(217, 70, 239, 0.9);
+
+    transform: scale(1.08);
+}
+
+.eq-profile-selector span {
+    flex: 1;
+
+    text-align: center;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 6px rgba(217, 70, 239, 0.75);
+}
+
+
+
+/* === AmbiencePanel === */
+
+.ambience-panel {
+    position: relative;
+
+    width: 390px;
+    height: 320px;
+
+    flex: 0 0 390px;
+
+    margin-top: 52px;
+    margin-left: 30px;
+
+    overflow: visible;
+}
+
+.ambience-frame {
+    position: absolute;
+
+    width: 400px;
+    height: auto;
+
+    top: -75px;
+    left: -65px;
+
+    display: block;
+}
+
+.ambience-content {
+    position: absolute;
+
+    top: 24px;
+    left: -8px;
+    right: 110px;
+
+    z-index: 2;
+}
+
+.ambience-preview {
+    width: 100%;
+    height: 88px;
+
+    object-fit: cover;
+
+
+    box-shadow:
+        0 0 12px rgba(217, 70, 239, 0.35),
+        inset 0 0 16px rgba(0, 0, 0, 0.55);
+
+    margin-bottom: 26px;
+}
+
+.ambience-power {
+    position: absolute;
+
+    top: -48px;
+    right: -12px;
+
+    width: 18px;
+    height: 18px;
+
+    border: none;
+    background: transparent;
+
+    color: #f0abfc;
+
+    font-size: 15px;
+
+    text-shadow:
+        0 0 6px #f0abfc,
+        0 0 14px #d946ef,
+        0 0 22px #a855f7;
+
+    cursor: pointer;
+
+    z-index: 5;
+
+    outline: none;
+
+    transition:
+        transform 0.08s ease,
+        opacity 0.08s ease,
+        text-shadow 0.08s ease;
+}
+
+.ambience-power:not(.ambience-power-on) {
+    opacity: 0.45;
+    text-shadow: 0 0 4px #a855f7;
+}
+
+.ambience-power-on {
+    color: #fff1ff;
+    opacity: 1;
+    text-shadow:
+        0 0 6px #fff1ff,
+        0 0 14px #f0abfc,
+        0 0 24px #d946ef,
+        0 0 34px #a855f7;
+}
+
+.ambience-power:focus,
+.ambience-power:focus-visible {
+    outline: none;
+}
+
+.ambience-power:hover {
+    opacity: 1;
+
+    text-shadow:
+        0 0 8px #f0abfc,
+        0 0 18px #d946ef,
+        0 0 26px #a855f7;
+}
+
+.ambience-power:active {
+    transform: translateY(1px) scale(0.96);
+
+    opacity: 0.8;
+
+    text-shadow:
+        0 0 4px #f0abfc,
+        0 0 10px #d946ef;
+}
+
+.ambience-type-selector {
+    width: 145px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 8px;
+    box-sizing: border-box;
+
+    border: 1px solid rgba(217, 70, 239, 0.85);
+
+    background:
+        linear-gradient(to bottom,
+            rgba(45, 0, 70, 0.95),
+            rgba(18, 0, 32, 0.98));
+
+    box-shadow:
+        0 0 10px rgba(217, 70, 239, 0.25),
+        inset 0 0 10px rgba(217, 70, 239, 0.18);
+
+    color: #f5d0fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    font-weight: 900;
+
+    user-select: none;
+}
+
+.ambience-type-selector button {
+    border: none;
+    background: transparent;
+
+    color: #d8b4fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    text-shadow:
+        0 0 4px rgba(217, 70, 239, 0.8);
+
+    transition:
+        color 0.15s ease,
+        text-shadow 0.15s ease,
+        transform 0.15s ease;
+
+    outline: none;
+}
+
+.ambience-type-selector button:hover {
+    color: white;
+
+    text-shadow:
+        0 0 6px rgba(240, 171, 252, 1),
+        0 0 12px rgba(217, 70, 239, 0.9);
+
+    transform: scale(1.08);
+}
+
+.ambience-type-selector span {
+    flex: 1;
+
+    text-align: center;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 6px rgba(217, 70, 239, 0.75);
+}
+
+.ambience-volume-percent {
+    color: #d8b4fe;
+
+    font-family: "Courier New", monospace;
+    font-size: .85rem;
+    font-weight: 900;
+
+    text-shadow:
+        0 0 5px rgba(217, 70, 239, 0.85);
+}
+
+.ambience-volume-label {
+    color: #f0abfc;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.85rem;
+    font-weight: 900;
+
+    text-shadow:
+        0 0 5px rgba(217, 70, 239, 0.85);
+}
+
+.ambience-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+}
+
+
+.ambience-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.ambience-volume-slider {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 190px;
+    height: 34px;
+
+    opacity: 0;
+
+    cursor: pointer;
+
+    z-index: 5;
+}
+
+.ambience-slider-track-wrapper {
+    position: relative;
+
+    width: 190px;
+    height: 34px;
+}
+
+.ambience-slider-bar {
+    position: absolute;
+
+    top: 10px;
+    left: 0;
+
+    width: 190px;
+    height: 13px;
+
+    pointer-events: none;
+}
+
+.ambience-slider-button {
+    position: absolute;
+
+    top: 4px;
+
+    width: 24px;
+    height: 24px;
+
+    transform: translateX(-50%);
+
+    image-rendering: pixelated;
+
+    pointer-events: none;
+
+    z-index: 3;
+}
+
+
+
+
+/* === OutputPanel === */
+
+.right-stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.output-panel {
+    position: relative;
+    width: 400px;
+    height: 312px;
+    box-sizing: border-box;
+
+    /* line up under the ambience frame, which is drawn offset outside its own box */
+    margin-top: -156px;
+    margin-left: -35px;
+
+    /* 9-slice so the tab, inner rectangle and its + corners stay crisp */
+    border-style: solid;
+    border-width: 111.5px 69.3px 73.8px 69.3px;
+    border-image: url("./assets/output-window.png") 370 230 245 230 fill / 111.5px 69.3px 73.8px 69.3px stretch;
+}
+
+.output-content {
+    position: absolute;
+    /* reach the frame's inner rectangle, which sits inside the 9-slice borders */
+    inset: -9px -6px -4px -6px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.output-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.output-label {
+    color: #f0abfc;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.85rem;
+    font-weight: 900;
+
+    text-shadow:
+        0 0 5px rgba(217, 70, 239, 0.85);
+}
+
+.output-selector {
+    width: 160px;
+}
+
+.output-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 6px;
+    align-items: center;
+}
+
+.output-grid .output-selector {
+    width: 100%;
+}
+
+.output-label-inline {
+    margin-top: 6px;
+}
+
+.output-grid .output-selector:last-child {
+    margin-top: 6px;
+}
+
+.output-readout {
+    padding: 8px 10px;
+
+    border: 1px solid #43215f;
+    border-radius: 2px;
+
+    background: rgba(36, 18, 56, 0.55);
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 255, 255, 0.06),
+        inset 0 0 10px rgba(124, 31, 214, 0.18);
+}
+
+.output-readout p {
+    margin: 0;
+
+    color: #b991ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.6;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.output-export-button {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 9px 12px;
+
+    cursor: pointer;
+}
+
+.output-export-button:disabled {
+    cursor: not-allowed;
+    /* a deeper purple rather than a fade, so it never turns grey over the dark panel */
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.12), transparent 45%),
+        linear-gradient(180deg, #7e22ce 0%, #3b0764 100%);
+    color: rgba(243, 232, 255, 0.7);
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.2),
+        inset -2px -2px 0 rgba(20, 0, 40, 0.8);
+}
+
+
+
+
+/* === NowPlayingBar === */
+/* positions are % of player-bar.png (2172x249) so overlays track the art at any size */
+
+/* fills the space between the logo and the fixed window controls, and centers the bar in it */
+.now-playing-slot {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    justify-content: center;
+
+    /* window controls are 150px wide and pinned to the window's right edge */
+    padding: 0 150px 0 24px;
+}
+
+.now-playing-bar {
+    position: relative;
+    width: 100%;
+    max-width: 1046px;
+
+    /* lets the screen text scale with the bar */
+    container-type: inline-size;
+
+    margin-top: -10px;
+    /* taller than the logo; only push the panels down a little */
+    margin-bottom: -16px;
+}
+
+.now-playing-bar-image {
+    width: 100%;
+    height: auto;
+    display: block;
+
+    pointer-events: none;
+    user-select: none;
+}
+
+.now-playing-disc {
+    position: absolute;
+    left: 6.6%;
+    top: 22.4%;
+    width: 21.1%;
+    height: 57.2%;
+
+    pointer-events: none;
+}
+
+/* a flat, upright disc squashed to the slot's tilt, so turning it looks like a CD spinning in place */
+.now-playing-disc-plane {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    aspect-ratio: 1;
+
+    transform: translateY(-50%) scaleY(0.307);
+}
+
+.now-playing-disc-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    filter: drop-shadow(0 0 10px rgba(217, 70, 239, 0.55));
+}
+
+.now-playing-disc-glow {
+    position: absolute;
+    inset: 0;
+
+    border-radius: 50%;
+    mix-blend-mode: screen;
+
+    background: radial-gradient(
+        ellipse at center,
+        rgba(240, 171, 252, 0.75) 0%,
+        rgba(217, 70, 239, 0.4) 40%,
+        transparent 72%
+    );
+
+    opacity: 0;
+    transition: opacity 0.08s linear;
+}
+
+.now-playing-button {
+    position: absolute;
+    top: 28.92%;
+    width: 5.16%;
+    height: 44.98%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+
+    cursor: pointer;
+    outline: none;
+
+    transition:
+        background 0.12s ease,
+        transform 0.08s ease;
+}
+
+.now-playing-prev {
+    left: 32.78%;
+}
+
+.now-playing-play {
+    left: 39.69%;
+}
+
+.now-playing-next {
+    left: 46.59%;
+}
+
+.now-playing-button svg {
+    width: 40%;
+    height: 40%;
+
+    fill: #f3e8ff;
+
+    filter:
+        drop-shadow(1px 1px 0 #3b0a5f)
+        drop-shadow(0 0 4px rgba(217, 70, 239, 0.9));
+
+    transition: filter 0.12s ease;
+}
+
+.now-playing-button:hover:not(:disabled) {
+    background: radial-gradient(circle, rgba(240, 171, 252, 0.22), transparent 70%);
+}
+
+.now-playing-button:hover:not(:disabled) svg {
+    filter:
+        drop-shadow(1px 1px 0 #3b0a5f)
+        drop-shadow(0 0 6px #f0abfc)
+        drop-shadow(0 0 12px #d946ef);
+}
+
+.now-playing-button:active:not(:disabled) {
+    transform: translateY(1px) scale(0.95);
+}
+
+.now-playing-button:disabled {
+    cursor: default;
+}
+
+.now-playing-button:disabled svg {
+    opacity: 0.35;
+    filter: drop-shadow(1px 1px 0 #3b0a5f);
+}
+
+.now-playing-screen {
+    position: absolute;
+    left: 55.94%;
+    top: 19.28%;
+    width: 24.54%;
+    height: 60.24%;
+
+    display: flex;
+    align-items: center;
+    gap: 0.8cqw;
+
+    padding: 0 1cqw;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* faint LCD scanlines */
+.now-playing-screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.035) 0 1px,
+        transparent 1px 3px
+    );
+
+    pointer-events: none;
+}
+
+.now-playing-info {
+    flex: 1;
+    min-width: 0;
+
+    font-family: "Courier New", monospace;
+    font-weight: 700;
+}
+
+.now-playing-name {
+    overflow: hidden;
+    white-space: nowrap;
+
+    color: #f5d0fe;
+    font-size: 1.25cqw;
+    font-weight: 900;
+
+    text-shadow: 0 0 6px rgba(217, 70, 239, 0.85);
+}
+
+.now-playing-name span {
+    display: inline-block;
+}
+
+.now-playing-name-scroll {
+    animation: now-playing-marquee 9s ease-in-out infinite alternate;
+}
+
+@keyframes now-playing-marquee {
+    0%,
+    15% {
+        transform: translateX(0);
+    }
+
+    85%,
+    100% {
+        transform: translateX(var(--scroll-distance));
+    }
+}
+
+.now-playing-detail,
+.now-playing-time {
+    margin: 2px 0 0;
+
+    white-space: nowrap;
+
+    text-shadow: 0 0 5px rgba(217, 70, 239, 0.7);
+}
+
+.now-playing-detail {
+    color: #b991ff;
+    font-size: 1.01cqw;
+}
+
+.now-playing-time {
+    color: #e9d5ff;
+    font-size: 1.13cqw;
+    letter-spacing: 0.5px;
+}
+
+.now-playing-spectrum {
+    width: 7.3cqw;
+    height: 4.4cqw;
+    flex: 0 0 auto;
+}
+
+
+
+
+/* === PresetsPanel === */
+
+.presets-panel {
+    position: relative;
+    width: 400px;
+    height: 279px;
+    box-sizing: border-box;
+
+    /* frame PNGs carry ~45px of transparent margin, so this reads as the usual panel gap */
+    margin-top: -48px;
+    margin-left: -35px;
+
+    border-style: solid;
+    border-width: 111.5px 69.3px 73.8px 69.3px;
+    border-image: url("./assets/presets-window.png") 370 230 245 230 fill / 111.5px 69.3px 73.8px 69.3px stretch;
+}
+
+.presets-content {
+    position: absolute;
+    inset: -14px -6px -8px -6px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+/* sits in the empty right side of the header bar, like the ambience power button */
+.presets-save-button {
+    position: absolute;
+    top: -45px;
+    right: -4px;
+
+    padding: 5px 12px;
+
+    border: 1px solid rgba(217, 70, 239, 0.85);
+    border-radius: 2px;
+
+    background:
+        linear-gradient(to bottom,
+            rgba(45, 0, 70, 0.95),
+            rgba(18, 0, 32, 0.98));
+
+    color: #f5d0fe;
+
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    text-shadow: 0 0 6px rgba(217, 70, 239, 0.75);
+
+    box-shadow:
+        0 0 10px rgba(217, 70, 239, 0.25),
+        inset 0 0 10px rgba(217, 70, 239, 0.18);
+
+    cursor: pointer;
+    outline: none;
+
+    transition:
+        box-shadow 0.12s ease,
+        color 0.12s ease;
+}
+
+.presets-save-button:hover {
+    color: #fff1ff;
+
+    box-shadow:
+        0 0 14px rgba(217, 70, 239, 0.55),
+        inset 0 0 14px rgba(217, 70, 239, 0.3);
+}
+
+.presets-save-button:active {
+    transform: translateY(1px);
+}
+
+.presets-empty {
+    margin-top: 16px;
+}
+
+
+
+
+/* === Glossy buttons ===
+   one look for every selector and small button, matching IMPORT / UPLOAD */
+
+.eq-profile-selector,
+.ambience-type-selector,
+.presets-save-button {
+    position: relative;
+
+    border: none;
+    border-radius: 2px;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.22), transparent 45%),
+        linear-gradient(180deg, #d946ef 0%, #7c1fd6 100%);
+
+    color: #fff1ff;
+
+    font-family: "Courier New", monospace;
+    font-weight: 900;
+
+    text-shadow:
+        1px 1px 0 #4c0677,
+        0 0 5px rgba(255, 255, 255, 0.7);
+
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.45),
+        inset -2px -2px 0 rgba(44, 0, 88, 0.8),
+        0 0 8px rgba(217, 70, 239, 0.45);
+}
+
+/* pixel corner brackets */
+.eq-profile-selector::before,
+.eq-profile-selector::after,
+.ambience-type-selector::before,
+.ambience-type-selector::after,
+.presets-save-button::before,
+.presets-save-button::after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border: 2px solid #ffe4ff;
+    pointer-events: none;
+}
+
+.eq-profile-selector::before,
+.ambience-type-selector::before,
+.presets-save-button::before {
+    top: 2px;
+    left: 2px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.eq-profile-selector::after,
+.ambience-type-selector::after,
+.presets-save-button::after {
+    bottom: 2px;
+    right: 2px;
+    border-left: none;
+    border-top: none;
+}
+
+.eq-profile-selector span,
+.ambience-type-selector span {
+    text-shadow:
+        1px 1px 0 #4c0677,
+        0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+.eq-profile-selector button,
+.ambience-type-selector button {
+    position: relative;
+    z-index: 1;
+
+    padding: 0 3px;
+
+    color: #fff1ff;
+
+    text-shadow:
+        1px 1px 0 #4c0677,
+        0 0 4px rgba(255, 255, 255, 0.6);
+}
+
+.eq-profile-selector button:hover,
+.ambience-type-selector button:hover {
+    color: #ffffff;
+
+    text-shadow:
+        1px 1px 0 #4c0677,
+        0 0 6px #ffffff,
+        0 0 12px #f0abfc;
+}
+
+/* the shared glossy rule sets position: relative; keep this one pinned in the header */
+.presets-save-button {
+    position: absolute;
+}
+
+.presets-save-button:hover {
+    color: #ffffff;
+
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.45),
+        inset -2px -2px 0 rgba(44, 0, 88, 0.8),
+        0 0 14px rgba(217, 70, 239, 0.9);
+}
+
+.presets-save-button:active {
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.35),
+        inset -2px -2px 0 rgba(44, 0, 88, 0.9),
+        0 0 14px rgba(217, 70, 239, 0.9);
+}
+
+
+
+/* === Taskbar ===
+   positions are taskbar.png pixels x 0.426 (108px art -> 46px bar) */
+
+.taskbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+
+    height: 46px;
+    box-sizing: border-box;
+
+    /* fixed left (clock + start) and right (tray + star) ends; the plain middle stretches */
+    border-style: solid;
+    border-width: 0 212.6px 0 196px;
+    border-image: url("./assets/taskbar.png") 0 499 0 460 fill / 0 212.6px 0 196px stretch;
+
+    font-family: "Courier New", monospace;
+    font-weight: 900;
+}
+
+.taskbar-clock {
+    position: absolute;
+    left: -185.4px;
+    top: 7px;
+    width: 88px;
+    height: 32px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 1.15;
+
+    color: #f5d0fe;
+    text-shadow: 0 0 5px rgba(217, 70, 239, 0.85);
+}
+
+.taskbar-time {
+    font-size: 0.74rem;
+}
+
+.taskbar-date {
+    font-size: 0.62rem;
+    color: #c4a1ff;
+}
+
+.taskbar-start-wrapper {
+    position: absolute;
+    left: -89.5px;
+    top: 8.5px;
+    width: 82px;
+    height: 30px;
+}
+
+.taskbar-start {
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+
+    color: #fff1ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    text-shadow:
+        1px 1px 0 #4c0677,
+        0 0 6px rgba(255, 255, 255, 0.7);
+
+    cursor: pointer;
+    outline: none;
+
+    transition: box-shadow 0.12s ease;
+}
+
+.taskbar-start:hover,
+.taskbar-start-open {
+    box-shadow:
+        0 0 12px rgba(217, 70, 239, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.25);
+}
+
+.taskbar-start:active {
+    transform: translateY(1px);
+}
+
+.taskbar-menu {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 14px);
+
+    width: 190px;
+    padding: 10px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    background: linear-gradient(to bottom, #1d0b33, #0b0418);
+    border: 1px solid #a855f7;
+    border-radius: 4px;
+
+    box-shadow:
+        0 0 16px rgba(217, 70, 239, 0.45),
+        inset 0 0 12px rgba(124, 31, 214, 0.3);
+}
+
+.taskbar-menu-title {
+    margin: 0 0 4px;
+    padding: 4px 8px;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.22), transparent 45%),
+        linear-gradient(180deg, #d946ef 0%, #7c1fd6 100%);
+    border-radius: 2px;
+
+    color: #fff1ff;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0 #4c0677;
+}
+
+.taskbar-menu button {
+    padding: 6px 8px;
+
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: transparent;
+
+    color: #e9d5ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-align: left;
+    text-shadow: 1px 1px 0 #3b0a5f;
+
+    cursor: pointer;
+    outline: none;
+}
+
+.taskbar-menu button:hover {
+    background: rgba(124, 31, 214, 0.28);
+    border-color: #6f3ca8;
+    color: #fff1ff;
+}
+
+.taskbar-menu-note {
+    margin: 4px 0 0;
+    padding-top: 6px;
+    border-top: 1px solid #43215f;
+
+    color: #8b6cc7;
+    font-size: 0.66rem;
+    text-align: center;
+}
+
+.taskbar-tabs {
+    position: absolute;
+    top: 7px;
+    bottom: 7px;
+    left: 10px;
+    right: 10px;
+
+    display: flex;
+    gap: 6px;
+    overflow: hidden;
+}
+
+/* task-tab.png 9-sliced: icon well on the left stays fixed */
+.taskbar-tab {
+    position: relative;
+    width: 190px;
+    height: 32px;
+    box-sizing: border-box;
+    flex: 0 1 190px;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0;
+    padding: 0;
+
+    border-style: solid;
+    border-width: 0 9px 0 30px;
+    border-image: url("./assets/task-tab.png") 0 40 0 130 fill / 0 9px 0 30px stretch;
+    background: transparent;
+
+    color: #c4a1ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.74rem;
+    font-weight: 900;
+    text-shadow: 1px 1px 0 #3b0a5f;
+
+    cursor: default;
+    outline: none;
+}
+
+button.taskbar-tab:not(:disabled) {
+    cursor: pointer;
+}
+
+button.taskbar-tab:not(:disabled):hover {
+    color: #fff1ff;
+    filter: drop-shadow(0 0 5px rgba(217, 70, 239, 0.7));
+}
+
+.taskbar-tab-active {
+    color: #fff1ff;
+    filter: drop-shadow(0 0 4px rgba(217, 70, 239, 0.6));
+}
+
+.taskbar-tab-icon {
+    position: absolute;
+    left: -21.5px;
+    width: 19px;
+
+    text-align: center;
+
+    color: #f0abfc;
+    font-size: 0.72rem;
+    text-shadow: 0 0 5px #d946ef;
+}
+
+.taskbar-tab-label {
+    min-width: 0;
+    padding-left: 2px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.taskbar-tray {
+    position: absolute;
+    right: -167px;
+    top: 7.7px;
+    width: 158.5px;
+    height: 31.5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.taskbar-tray-button {
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    cursor: pointer;
+    outline: none;
+}
+
+.taskbar-tray-static {
+    cursor: default;
+}
+
+.taskbar-tray-button svg {
+    width: 18px;
+    height: 18px;
+
+    fill: none;
+    stroke: #8b6cc7;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    transition:
+        stroke 0.12s ease,
+        filter 0.12s ease;
+}
+
+.taskbar-tray-button svg .tray-fill {
+    fill: #8b6cc7;
+    stroke: none;
+}
+
+.taskbar-tray-on svg,
+.taskbar-tray-static svg {
+    stroke: #f0abfc;
+    filter: drop-shadow(0 0 4px #d946ef);
+}
+
+.taskbar-tray-on svg .tray-fill,
+.taskbar-tray-static svg .tray-fill {
+    fill: #f0abfc;
+}
+
+button.taskbar-tray-button:hover svg {
+    stroke: #ffffff;
+    filter: drop-shadow(0 0 6px #f0abfc);
+}
+
+
+
+/* === Transform detail === */
+
+.advanced-transform-section {
+    top: 228px;
+    left: 34px;
+    right: 34px;
+}
+
+/* each row of advanced controls sits in its own faint inset box */
+.advanced-grid.advanced-row {
+    row-gap: 0;
+    margin-top: 12px;
+    padding: 12px 0 4px;
+
+    border: 1px solid rgba(168, 85, 247, 0.22);
+    border-radius: 4px;
+
+    background: rgba(36, 18, 56, 0.32);
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 255, 255, 0.04),
+        inset 0 0 14px rgba(124, 31, 214, 0.12);
+}
+
+.advanced-row + .advanced-row {
+    margin-top: 14px;
+}
+
+.advanced-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.advanced-section-line {
+    flex: 1;
+    height: 1px;
+
+    background: linear-gradient(to right, transparent, rgba(168, 85, 247, 0.55));
+}
+
+.advanced-section-line:last-child {
+    background: linear-gradient(to left, transparent, rgba(168, 85, 247, 0.55));
+}
+
+.transform-slider-ticks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -12px;
+    height: 10px;
+
+    pointer-events: none;
+}
+
+.transform-slider-ticks span {
+    position: absolute;
+    bottom: 0;
+    width: 1px;
+    height: 3px;
+
+    background: rgba(168, 85, 247, 0.45);
+    transform: translateX(-50%);
+}
+
+.transform-slider-ticks .tick-mid {
+    height: 6px;
+    background: rgba(192, 132, 252, 0.6);
+}
+
+.transform-slider-ticks .tick-major {
+    width: 2px;
+    height: 10px;
+    background: #d8b4fe;
+    box-shadow: 0 0 4px rgba(217, 70, 239, 0.8);
+}
+
+.advanced-slider-ticks {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 27px;
+    height: 4px;
+
+    pointer-events: none;
+}
+
+.advanced-slider-ticks span {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 4px;
+
+    background: rgba(192, 132, 252, 0.55);
+    transform: translateX(-50%);
+}
+
+
+
+/* === History track length === */
+
+.history-detail {
+    color: #8b6cc7;
+    font-size: 0.72rem;
+}
+
+.history-item-active .history-detail {
+    color: #d8b4fe;
+}
+
+
+
+/* === Tight panel spacing ===
+   every frame PNG carries transparent margin, so these negative offsets bring the
+   visible gap between panels down to ~14px, like the inspo board */
+
+.stage {
+    justify-content: center;
+}
+
+.player-shell {
+    gap: 0;
+    margin-left: 0;
+}
+
+.left-stack {
+    gap: 0;
+    margin-right: -30px;
+}
+
+.history-panel {
+    margin-top: -20px;
+}
+
+.workspace-row {
+    gap: 0;
+}
+
+.transform-panel-wrapper {
+    margin-top: -42px;
+}
+
+.ambience-panel {
+    margin-left: 29px;
+}
+
+/* the ambience frame is drawn 65px left of its box, leaving empty space on the right */
+.right-stack {
+    margin-right: -55px;
+}
+
+.output-panel {
+    margin-top: -180px;
+    margin-left: -36px;
+}
+
+.presets-panel {
+    margin-top: -72px;
+    margin-left: -36px;
+}
+
+/* moved up with the tighter gaps above it, so it grows to keep its bottom level with transform */
+.presets-panel {
+    height: 303px;
+}
+
+/* line the logo up with the left edge of the (centered) panels */
+.title-bar {
+    padding-left: var(--shell-left, 24px);
+}
+
+
+
+/* === Stretchable center column ===
+   waveform and transform frames are 3-sliced (tab + left corners, plain middle,
+   right corners) so they can widen into spare space on big windows */
+
+.waveform-panel-container,
+.transform-panel-container {
+    width: calc(660px + var(--center-extra, 0px));
+}
+
+.waveform-panel-container {
+    height: 307px;
+}
+
+.transform-panel-container {
+    height: 528px;
+}
+
+.waveform-frame-image,
+.transform-frame-image {
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+
+    border-style: solid;
+    pointer-events: none;
+}
+
+/* waveform-frame.png 1839x855 shown at x0.359 */
+.waveform-frame-image {
+    border-width: 0 50.2px 0 154.3px;
+    border-image: url("./assets/waveform-frame.png") 0 140 0 430 fill / 0 50.2px 0 154.3px stretch;
+}
+
+/* transform-frame.png 1402x1122 shown at x0.471 */
+.transform-frame-image {
+    border-width: 0 51.8px 0 169.5px;
+    border-image: url("./assets/transform-frame.png") 0 110 0 360 fill / 0 51.8px 0 169.5px stretch;
+}
+
+.waveform-display {
+    width: auto;
+    right: 34px;
+}
+
+
+
+/* === Button color ===
+   matched to the panel tabs (#9029f2 / #a43afe) instead of the old pink-magenta */
+
+:root {
+    --button-face:
+        linear-gradient(rgba(255, 255, 255, 0.24), transparent 45%),
+        linear-gradient(180deg, #a845ff 0%, #8a24f4 52%, #6a10dc 100%);
+    --button-face-disabled:
+        linear-gradient(rgba(255, 255, 255, 0.1), transparent 45%),
+        linear-gradient(180deg, #5b21b6 0%, #3b0c8c 55%, #2a0866 100%);
+    --button-text-shadow:
+        1px 1px 0 #2e0a73,
+        0 0 5px rgba(255, 255, 255, 0.65);
+    --button-bevel:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.42),
+        inset -2px -2px 0 rgba(30, 0, 90, 0.8);
+    --button-glow: rgba(138, 36, 244, 0.5);
+    --button-glow-strong: rgba(164, 58, 254, 0.95);
+}
+
+.import-button,
+.upload-button,
+.eq-profile-selector,
+.ambience-type-selector,
+.presets-save-button,
+.taskbar-menu-title {
+    background: var(--button-face);
+    text-shadow: var(--button-text-shadow);
+    box-shadow:
+        var(--button-bevel),
+        0 0 8px var(--button-glow);
+}
+
+.eq-profile-selector span,
+.ambience-type-selector span,
+.eq-profile-selector button,
+.ambience-type-selector button {
+    text-shadow: var(--button-text-shadow);
+}
+
+.import-button:active,
+.import-button:focus,
+.upload-button:active,
+.upload-button:focus,
+.presets-save-button:hover,
+.presets-save-button:active {
+    box-shadow:
+        var(--button-bevel),
+        0 0 14px var(--button-glow-strong);
+}
+
+.eq-profile-selector button:hover,
+.ambience-type-selector button:hover {
+    text-shadow:
+        1px 1px 0 #2e0a73,
+        0 0 6px #ffffff,
+        0 0 12px #c084fc;
+}
+
+/* corner brackets: a cooler lavender to match */
+.import-button::before,
+.import-button::after,
+.upload-button::before,
+.upload-button::after,
+.eq-profile-selector::before,
+.eq-profile-selector::after,
+.ambience-type-selector::before,
+.ambience-type-selector::after,
+.presets-save-button::before,
+.presets-save-button::after {
+    border-color: #efe4ff;
+}
+
+.output-export-button:disabled {
+    background: var(--button-face-disabled);
+    color: rgba(237, 228, 255, 0.6);
+    box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.16),
+        inset -2px -2px 0 rgba(15, 0, 45, 0.85);
+}
+
+
+
+/* === Fitted layout ===
+   the panel block is placed and scaled from App.jsx (fitShell) so its margins on
+   every side match the gap between panels */
+
+.player-shell {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    margin: 0;
+    padding: 0;
+
+    transform-origin: 0 0;
+}
+
+
+/* presets list matches history: same hint spacing as .history-content */
+.presets-content {
+    inset: -4px -6px -8px -6px;
+}
+
+
+/* sits centered on the header tab, right edge level with the inner frame */
+.presets-save-button {
+    top: -58px;
+    right: -14px;
+}
+
+.taskbar-tab-planet {
+    width: 22px;
+    height: auto;
+    left: -23px;
+
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 4px rgba(217, 70, 239, 0.7));
+}
+
+
+
+/* === AccessGate ===
+   tucked under the window controls, in the gap beside the now playing bar */
+
+.access-gate {
+    position: fixed;
+    top: 88px;
+    right: 14px;
+    z-index: 30;
+
+    width: 150px;
+    margin: 0;
+
+    font-family: "Courier New", monospace;
+}
+
+.access-gate-label {
+    display: block;
+    margin-bottom: 5px;
+
+    color: #c77dff;
+    font-size: 0.66rem;
+    font-weight: 900;
+    text-align: right;
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.access-gate-row {
+    display: flex;
+    gap: 4px;
+}
+
+.access-gate-input {
+    flex: 1;
+    min-width: 0;
+
+    padding: 6px 8px;
+    font-size: 0.72rem;
+}
+
+.access-gate-button {
+    position: relative;
+    width: 28px;
+
+    border: none;
+    border-radius: 2px;
+
+    background: var(--button-face);
+    color: #fff1ff;
+    font-size: 0.7rem;
+    text-shadow: var(--button-text-shadow);
+    box-shadow:
+        var(--button-bevel),
+        0 0 8px var(--button-glow);
+
+    cursor: pointer;
+    outline: none;
+}
+
+.access-gate-button:hover:not(:disabled) {
+    box-shadow:
+        var(--button-bevel),
+        0 0 14px var(--button-glow-strong);
+}
+
+.access-gate-open {
+    text-align: right;
+
+    color: #d8b4fe;
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px rgba(164, 58, 254, 0.9);
+}
+
+/* until the code is in, the panels are visible but asleep */
+.player-shell-locked {
+    filter: saturate(0.55) brightness(0.45);
+    pointer-events: none;
+    user-select: none;
+}
+
+.player-shell {
+    transition: filter 0.6s ease;
+}
+
+
+
+/* === Advanced sliders fill their boxes ===
+   three equal columns instead of fixed 150px sliders bunched in the middle */
+
+.advanced-grid.advanced-row {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 44px;
+    padding-left: 26px;
+    padding-right: 26px;
+}
+
+.advanced-slider,
+.advanced-eq-control {
+    min-width: 0;
+}
+
+.advanced-slider-track-wrapper,
+.advanced-slider-bar,
+.advanced-slider-input {
+    width: 100%;
+}
+
+.advanced-eq-control .eq-profile-selector {
+    width: 100%;
+}
+
+
+/* single row so it clears the panels; the hint and errors live in the placeholder */
+.access-gate {
+    top: 90px;
+}
+
+.access-gate-input {
+    height: 26px;
+    padding: 4px 8px;
+}
+
+.access-gate-input::placeholder {
+    color: #c77dff;
+    opacity: 1;
+}
+
+.access-gate-error .access-gate-input {
+    border-color: #f0abfc;
+    animation: access-gate-shake 0.3s ease;
+}
+
+@keyframes access-gate-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+
+/* chunky retro asterisks */
+.access-gate-input {
+    letter-spacing: 2px;
+    color: #f0abfc;
+    text-shadow: 0 0 5px rgba(217, 70, 239, 0.8);
+}
+
+.access-gate-input::placeholder {
+    letter-spacing: 0;
+    text-shadow: none;
+}
+
+
+
+/* === Output flip card ===
+   front = OUTPUT, back = SPOTIFY; each face carries its own 9-sliced frame */
+
+.output-panel {
+    border: 0;
+    border-image: none;
+    perspective: 1400px;
+}
+
+.output-card {
+    position: absolute;
+    inset: 0;
+
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.output-panel-flipped .output-card {
+    transform: rotateY(180deg);
+}
+
+.output-face {
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    border-style: solid;
+    border-width: 111.5px 69.3px 73.8px 69.3px;
+    border-image: url("./assets/output-window.png") 370 230 245 230 fill / 111.5px 69.3px 73.8px 69.3px stretch;
+}
+
+.output-face-back {
+    transform: rotateY(180deg);
+    border-image-source: url("./assets/spotify-window.png");
+}
+
+/* header buttons sit on the tab bar, like the ambience power button */
+.output-flip-button,
+.output-help-button {
+    position: absolute;
+    top: -60px;
+    right: -16px;
+    z-index: 5;
+
+    width: 22px;
+    height: 22px;
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    color: #f0abfc;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    font-weight: 900;
+
+    text-shadow:
+        0 0 6px #f0abfc,
+        0 0 14px #c084fc;
+
+    cursor: pointer;
+    outline: none;
+
+    transition: transform 0.2s ease, text-shadow 0.12s ease;
+}
+
+.output-flip-button:hover {
+    transform: rotate(180deg);
+    text-shadow:
+        0 0 8px #ffffff,
+        0 0 18px #c084fc;
+}
+
+.output-help-button {
+    right: 12px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.output-help-button:hover,
+.output-help-open {
+    opacity: 1;
+}
+
+.output-folder-button {
+    justify-content: center;
+    cursor: pointer;
+    outline: none;
+}
+
+.output-folder-button span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.output-folder-button:disabled {
+    cursor: default;
+    background: var(--button-face-disabled);
+}
+
+.spotify-steps {
+    margin: 0;
+    padding: 2px 0 0 18px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    color: #d8b4fe;
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.spotify-steps li::marker {
+    color: #c084fc;
+    font-weight: 900;
+}
+
+.spotify-steps b {
+    color: #f5d0fe;
+}
+
+
+/* directly under the window controls' visible buttons, same width */
+.access-gate {
+    top: 50px;
+    right: 1.5px;
+    width: 143px;
+}
+
+
+
+/* === Spotify guided setup === */
+
+.spotify-step {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.spotify-step .output-export-button {
+    margin-top: auto;
+}
+
+.spotify-step-count {
+    margin: 0;
+
+    color: #c084fc;
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(164, 58, 254, 0.8);
+}
+
+.spotify-step-text {
+    margin: 0;
+
+    color: #e9d5ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.45;
+    text-shadow: 1px 1px 0 #3b0a5f;
+}
+
+.spotify-step-text b {
+    color: #f5d0fe;
+    font-weight: 900;
+}
+
+.spotify-link {
+    padding: 0;
+    border: none;
+    background: none;
+
+    color: #d8b4fe;
+    font: inherit;
+    letter-spacing: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    cursor: pointer;
+}
+
+.spotify-link:hover {
+    color: #ffffff;
+}
+
+
+/* ⓘ sits left of ↻; ? (once set up) sits left of that */
+.output-info-button {
+    right: 12px;
+}
+
+.output-face-back .output-help-button:not(.output-info-button) {
+    right: 38px;
+}
+
+.spotify-info {
+    padding-left: 14px;
+    gap: 5px;
+    font-size: 0.64rem;
+    list-style: "✦ ";
+}
+
+
+
+/* === Spotify info: phone steps + limits === */
+
+.spotify-info-view {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.spotify-info-tabs {
+    display: flex;
+    gap: 6px;
+}
+
+.spotify-info-tabs button {
+    padding: 3px 8px;
+
+    border: 1px solid #43215f;
+    border-radius: 2px;
+    background: transparent;
+
+    color: #8b6cc7;
+    font-family: "Courier New", monospace;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+    outline: none;
+}
+
+.spotify-info-tabs .spotify-info-tab-active {
+    border: none;
+    background: var(--button-face);
+    color: #fff1ff;
+    text-shadow: var(--button-text-shadow);
+    box-shadow:
+        var(--button-bevel),
+        0 0 6px var(--button-glow);
+}
+
+.spotify-info-view .spotify-info {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 4px;
+
+    scrollbar-width: thin;
+    scrollbar-color: #7c1fd6 transparent;
+}
+
+ol.spotify-info {
+    list-style: decimal;
+    padding-left: 16px;
+}
+
+.spotify-steps .spotify-note {
+    list-style: none;
+    margin-left: -16px;
+
+    color: #f0abfc;
+    font-style: italic;
+}
+
+ul.spotify-info {
+    gap: 3px;
+}
+
+
+
+
+/* === Film grain ===
+   a noise texture over everything, nudged around a few times a second like old video */
+
+.app.grain-on::after {
+    content: "";
+    position: fixed;
+    inset: -60px;
+    z-index: 100;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+
+    opacity: 0.14;
+    mix-blend-mode: overlay;
+
+    pointer-events: none;
+    animation: grain-shift 0.6s steps(3) infinite;
+}
+
+@keyframes grain-shift {
+    0% { transform: translate(0, 0); }
+    33% { transform: translate(-23px, 17px); }
+    66% { transform: translate(19px, -29px); }
+    100% { transform: translate(-11px, 31px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .app.grain-on::after {
+        animation: none;
+    }
+}
+
+/* overlay does almost nothing on this dark palette; plain speckle reads better */
+.app.grain-on::after {
+    opacity: 0.07;
+    mix-blend-mode: normal;
+}
+
+/* stronger, slightly chunkier grain so it reads at normal viewing distance */
+.app.grain-on::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 2.2 -0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+    opacity: 0.16;
+}

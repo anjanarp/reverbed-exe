@@ -1,0 +1,14 @@
+# python
+backend/.venv/
+.venv/
+__pycache__/
+*.pyc
+
+# songs people imported; never commit these
+backend/downloads/
+
+# secrets
+.env
+*.env.local
+
+.DS_Store
