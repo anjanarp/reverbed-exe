@@ -84,10 +84,9 @@ function OutputPanel({
         }
     }
 
+    // saved under the name shown in history (rename it there to change the file name)
     function exportName() {
-        const baseName = (trackName || "track").replace(/[\\/:*?"<>|]/g, "")
-
-        return `${baseName} (${loopOnly ? "reverbed loop" : "reverbed"})`
+        return (trackName || "track").replace(/[\\/:*?"<>|]/g, "").trim() || "track"
     }
 
     function downloadFile(file, name) {
