@@ -35,6 +35,8 @@ VERSION = 1
 ALLOWED_ORIGINS = {
     "https://reverbed-exe.web.app",
     "https://reverbed-exe.firebaseapp.com",
+    "https://reverbed-exe.com",
+    "https://www.reverbed-exe.com",
     "http://localhost:5173",
 }
 
