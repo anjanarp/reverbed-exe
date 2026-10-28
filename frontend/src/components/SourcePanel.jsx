@@ -8,6 +8,14 @@ import { helperAvailable, importViaHelper } from "../helper"
 
 const MAX_UPLOAD_MB = 50
 
+function isSoundCloud(url) {
+    try {
+        return new URL(url.trim()).hostname.toLowerCase().endsWith("soundcloud.com")
+    } catch {
+        return false
+    }
+}
+
 function SourcePanel({ onTrackLoaded, onNeedHelper }) {
 
     const [youtubeUrl, setYoutubeUrl] = useState("")
@@ -26,12 +34,12 @@ function SourcePanel({ onTrackLoaded, onNeedHelper }) {
                 <div className="youtube-section">
 
                     <p className="youtube-label">
-                        YouTube URL
+                        YouTube / SoundCloud URL
                     </p>
 
                     <input
                         className="youtube-input"
-                        placeholder="https://youtu.be/..."
+                        placeholder="paste a link..."
                         value={youtubeUrl}
                         onChange={(event) => setYoutubeUrl(event.target.value)}
                     />
@@ -42,8 +50,11 @@ function SourcePanel({ onTrackLoaded, onNeedHelper }) {
                             setStatus("importing...")
 
                             try {
-                                // youtube blocks the cloud server, so prefer the visitor's own computer
-                                if (await helperAvailable()) {
+                                const soundcloud = isSoundCloud(youtubeUrl)
+
+                                // youtube blocks the cloud server, so prefer the visitor's own computer;
+                                // soundcloud doesn't, so it always goes straight to the server
+                                if (!soundcloud && await helperAvailable()) {
                                     setStatus("importing via your computer...")
                                     onTrackLoaded(await importViaHelper(youtubeUrl), "youtube")
                                     setStatus("downloaded ♡")
@@ -51,7 +62,7 @@ function SourcePanel({ onTrackLoaded, onNeedHelper }) {
                                 }
 
                                 // the local dev server can still reach youtube directly
-                                if (import.meta.env.PROD) {
+                                if (!soundcloud && import.meta.env.PROD) {
                                     setStatus("youtube needs the helper ♡")
                                     onNeedHelper()
                                     return
@@ -67,7 +78,7 @@ function SourcePanel({ onTrackLoaded, onNeedHelper }) {
                                     }),
                                 })
 
-                                onTrackLoaded(data, "youtube")
+                                onTrackLoaded(data, soundcloud ? "soundcloud" : "youtube")
 
                                 setStatus("downloaded ♡")
                             } catch (error) {

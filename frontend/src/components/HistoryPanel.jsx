@@ -25,7 +25,7 @@ function HistoryPanel({ history, activeTrackId, onSelect, onRename, onRemove }) 
                     <RenamableList
                         items={history}
                         activeId={activeTrackId}
-                        renderIcon={(track) => (track.source === "youtube" ? "▶" : "♪")}
+                        renderIcon={(track) => ({ youtube: "▶", soundcloud: "☁" })[track.source] || "♪"}
                         renderDetail={(track) => formatLength(track.duration)}
                         onSelect={onSelect}
                         onRename={onRename}

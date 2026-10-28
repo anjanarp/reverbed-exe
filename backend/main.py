@@ -38,6 +38,7 @@ MAX_UPLOAD_BYTES = int(os.environ.get("MAX_UPLOAD_MB", "50")) * 1024 * 1024
 TRACK_TTL_SECONDS = int(os.environ.get("TRACK_TTL_MINUTES", "120")) * 60
 
 YOUTUBE_HOSTS = {"youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com", "youtu.be"}
+SOUNDCLOUD_HOSTS = {"soundcloud.com", "www.soundcloud.com", "m.soundcloud.com", "on.soundcloud.com"}
 
 
 app = FastAPI()
@@ -221,9 +222,11 @@ def verify_code(request: Request, x_access_code: str = Header(default="")):
 def download_audio(request: Request, body: DownloadRequest, x_access_code: str = Header(default="")):
     require_access(request, x_access_code)
 
-    # only youtube, so the server can't be pointed at arbitrary sites or huge files
-    if (urlparse(body.url).hostname or "").lower() not in YOUTUBE_HOSTS:
-        raise HTTPException(status_code=400, detail="only youtube links are supported")
+    # only youtube + soundcloud, so the server can't be pointed at arbitrary sites or huge files
+    host = (urlparse(body.url).hostname or "").lower()
+
+    if host not in YOUTUBE_HOSTS | SOUNDCLOUD_HOSTS:
+        raise HTTPException(status_code=400, detail="only youtube or soundcloud links")
 
     count_import(request)
 
@@ -258,15 +261,23 @@ def download_audio(request: Request, body: DownloadRequest, x_access_code: str =
         if "confirm you" in str(error) and "bot" in str(error):
             raise HTTPException(status_code=503, detail="youtube blocked the server. run the helper or upload the file")
 
-        raise HTTPException(status_code=502, detail="youtube download failed")
+        raise HTTPException(status_code=502, detail="couldn't get that one. try again or upload the file")
 
     downloaded_files = list(DOWNLOADS_DIR.glob(f"{track_id}-source.*"))
 
     if not downloaded_files:
         delete_track(track_id)
-        raise HTTPException(status_code=502, detail="youtube download failed")
+        raise HTTPException(status_code=502, detail="couldn't get that one. try again or upload the file")
 
     source_path = downloaded_files[0]
+
+    # soundcloud go+ tracks only hand out a ~30 second preview to non-subscribers
+    got_seconds = audio_seconds(source_path) or 0
+
+    if duration > 45 and got_seconds < duration * 0.6:
+        delete_track(track_id)
+        raise HTTPException(status_code=422, detail="that one's soundcloud go+ only, so just a preview ♡")
+
     mp3_path = DOWNLOADS_DIR / f"{track_id}.mp3"
 
     convert_to_mp3(source_path, mp3_path)
