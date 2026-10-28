@@ -52,18 +52,51 @@ def venv_python():
     return VENV_DIR / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
 
 
+# written after a successful setup, so a half-finished first run gets redone
+READY_MARKER = HOME / "ready-v2"
+
+
+def build_environment():
+    shutil.rmtree(VENV_DIR, ignore_errors=True)
+    HOME.mkdir(parents=True, exist_ok=True)
+
+    pip_quiet = ["--quiet", "--disable-pip-version-check"]
+
+    if sys.version_info >= (3, 10):
+        venv.create(VENV_DIR, with_pip=True)
+        subprocess.run([str(venv_python()), "-m", "pip", "install", *pip_quiet, YT_DLP], check=True)
+        return
+
+    # this python is too old for current yt-dlp (common on Macs: Apple's 3.9),
+    # so fetch a private modern python with uv instead of asking anyone to install one
+    print("your python is a bit old, so the helper is grabbing its own newer one...")
+    tools = HOME / "tools"
+    venv.create(tools, with_pip=True)
+    tools_python = tools / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    subprocess.run([str(tools_python), "-m", "pip", "install", *pip_quiet, "uv"], check=True)
+
+    uv = [str(tools_python), "-m", "uv"]
+    uv_env = dict(os.environ, UV_PYTHON_INSTALL_DIR=str(HOME / "python"))
+    subprocess.run([*uv, "venv", "--quiet", "--python", "3.12", str(VENV_DIR)], check=True, env=uv_env)
+    subprocess.run([*uv, "pip", "install", "--quiet", "--python", str(venv_python()), YT_DLP], check=True, env=uv_env)
+
+
 def ensure_environment():
     """Install yt-dlp into a private folder once, then rerun this script inside it."""
     if os.environ.get("REVERBED_HELPER_CHILD") == "1":
         return
 
-    if not venv_python().exists():
+    if not (READY_MARKER.exists() and venv_python().exists()):
         print("first run: setting up the helper (about a minute)...")
-        venv.create(VENV_DIR, with_pip=True)
-        subprocess.run(
-            [str(venv_python()), "-m", "pip", "install", "--quiet", "--disable-pip-version-check", YT_DLP],
-            check=True,
-        )
+
+        try:
+            build_environment()
+        except subprocess.CalledProcessError:
+            print()
+            print("  setup didn't finish (usually a wifi hiccup). run the same command again ♡")
+            sys.exit(1)
+
+        READY_MARKER.write_text(YT_DLP)
 
     env = dict(os.environ, REVERBED_HELPER_CHILD="1")
 
