@@ -16,3 +16,6 @@ backend/downloads/
 # firebase
 .firebase/
 firebase-debug.log
+
+# personal research notes (not for the public repo)
+notes/
